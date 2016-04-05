@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
     where(uid: auth_info[:uid]).first_or_create do |new_user|
       new_user.uid          = auth_info.uid
       new_user.name         = auth_info.info.name
-      new_user.screen_name  = auth_info.info.nickname
+      new_user.username     = auth_info.info.nickname
       new_user.oauth_token  = auth_info.credentials.token
       new_user.profile_pic  = auth_info.info.image
     end

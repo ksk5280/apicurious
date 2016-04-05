@@ -1,5 +1,5 @@
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
+  <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
@@ -11,11 +11,35 @@
     </div>
 
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control header-search-input" placeholder="Search Git Curious">
+        </div>
+      </form>
+      <ul class="nav navbar-nav">
+        <li><a href="#">Pull requests</a></li>
+        <li><a href="#">Issues</a></li>
+        <li><a href="#">Gist</a></li>
+      </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if current_user %>
-          <li><%= link_to "Hello #{current_user.name}: Logout", logout_path, method: :delete %></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= image_tag "#{@user.profile_pic}", size: "20x20", class: "mini-avatar" %><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li>Signed in as <b><%= @user.username %></b></li>
+            <li role="separator" class="divider"></li>
+            <li><%= link_to "Your profile", user_path(@user) %></li>
+            <li><a href="#">Your stars</a></li>
+            <li><a href="#">Explore</a></li>
+            <li><a href="#">Integration</a></li>
+            <li><a href="#">Help</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Settings</a></li>
+            <li><%= link_to "Sign out", logout_path, method: :delete %></li>
+          </ul>
+        </li>
         <% else %>
-          <li><%= link_to "Sign in with Github", github_login_path %></li>
+        <li><%= link_to "Sign in with Github", github_login_path %></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->
