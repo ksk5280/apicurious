@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'homes#show'
 
-  get "/:username", to: "users#show", as: "user_show"
+  get "/:username", to: "users#show", as: "user"
 
   get "/auth/github", as: :github_login
   get "/auth/github/callback", to: "sessions#create"
