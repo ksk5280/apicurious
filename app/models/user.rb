@@ -15,17 +15,46 @@ class User < ActiveRecord::Base
 
   def repos(user)
     data = User.service.repos(user)
-    data.map do |repo|
-      repo.name
-    end
+    data.map(&:name)
+  end
+
+  def repo_count(user)
+    repos(user).count
+  end
+
+  def orgs(user)
+    data = User.service.orgs(user)
+    data.map(&:name)
+  end
+
+  def org_count(user)
+    orgs(user).count
   end
 
   def starred_repos(user)
+    data = User.service.starred_repos(user)
+    data.map(&:name)
+  end
 
+  def starred_repo_count(user)
+    User.service.starred_repos(user).count
   end
 
   def followers(user)
-    binding.pry
-    User.service.followers(user)
+    data = User.service.followers(user)
+    data.map(&:login)
+  end
+
+  def follower_count(user)
+    followers(user).count
+  end
+
+  def following(user)
+    data = User.service.following(user)
+    data.map(&:login)
+  end
+
+  def following_count(user)
+    following(user).count
   end
 end

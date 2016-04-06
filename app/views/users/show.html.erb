@@ -2,11 +2,29 @@
   <%= image_tag "#{@user.profile_pic}", size: "230x230", class: "avatar" %>
   <h1><%= @user.name %></h1>
   <h3><%= @user.username %></h3>
-  User repositories
+
+  <h1>Repositories (<%= @user.repo_count(@user) %>)</h1>
   <% @user.repos(@user).each do |repo| %>
   <li><%= repo %></li>
   <% end %>
 
-  User followers
-  <%= @user.followers(@user) %>
+  <h1>Followers (<%= @user.follower_count(@user) %>)</h1>
+  <% @user.followers(@user).each do |follower| %>
+  <li><%= follower %></li>
+  <% end %>
+
+  <h1>Following (<%= @user.following_count(@user) %>)</h1>
+  <% @user.following(@user).each do |following| %>
+  <li><%= following %></li>
+  <% end %>
+
+  <h1>Starred Repositories (<%= @user.starred_repo_count(@user) %>)</h1>
+  <% @user.starred_repos(@user).each do |repo| %>
+  <li><%= repo %></li>
+  <% end %>
+
+  <h1>Organizations (<%= @user.org_count(@user) %>)</h1>
+  <% @user.orgs(@user).each do |org| %>
+  <li><%= org %></li>
+  <% end %>
 </div>
