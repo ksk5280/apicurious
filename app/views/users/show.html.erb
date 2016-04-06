@@ -2,4 +2,11 @@
   <%= image_tag "#{@user.profile_pic}", size: "230x230", class: "avatar" %>
   <h1><%= @user.name %></h1>
   <h3><%= @user.username %></h3>
+  User repositories
+  <% @user.repos(@user).each do |repo| %>
+  <li><%= repo %></li>
+  <% end %>
+
+  User followers
+  <%= @user.followers(@user) %>
 </div>
