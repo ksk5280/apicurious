@@ -1,6 +1,8 @@
 require "rails_helper"
 
-describe GithubService do
+RSpec.describe GithubService do
+  attr_reader :service, :user
+
   before(:each) do
     @service = GithubService.new
     @user = User.new
@@ -11,7 +13,7 @@ describe GithubService do
   context ".repositories" do
     it "returns current user repositories" do
       VCR.use_cassette("github_service.repos") do
-        repos = @service.repos(@user)
+        repos = service.repos(user)
         repo  = repos.first
 
         expect(repo[:name]).to eq("active-record-sinatra")
@@ -23,8 +25,7 @@ describe GithubService do
   context ".organizations" do
     it "returns current user's orgs" do
       VCR.use_cassette("github_service.orgs") do
-        orgs = @service.orgs(@user)
-        org  = orgs.first
+        orgs = service.orgs(user)
 
         expect(orgs.count).to eq(0)
       end
@@ -34,7 +35,7 @@ describe GithubService do
   context ".followers" do
     it "returns current user's followers" do
       VCR.use_cassette("github_service.followers") do
-        followers = @service.followers(@user)
+        followers = service.followers(user)
         follower  = followers.first
 
         expect(follower[:login]).to eq("hkang1")
@@ -46,7 +47,7 @@ describe GithubService do
   context ".following" do
     it "returns users the current user is following" do
       VCR.use_cassette("github_service.following") do
-        followings = @service.following(@user)
+        followings = service.following(user)
         following  = followings.first
 
         expect(following[:login]).to eq("hkang1")
@@ -58,7 +59,7 @@ describe GithubService do
   context ".starred_repos" do
     it "returns current user's starred_repos" do
       VCR.use_cassette("github_service.starred_repos") do
-        starred_repos = @service.starred_repos(@user)
+        starred_repos = service.starred_repos(user)
         starred_repo  = starred_repos.first
 
         expect(starred_repo[:name]).to eq("apicurious")
@@ -70,7 +71,7 @@ describe GithubService do
   context ".events" do
     it "returns current user's events" do
       VCR.use_cassette("github_service.events") do
-        events = @service.events(@user)
+        events = service.events(user)
         event  = events.first
 
         expect(event[:actor][:login]).to eq("ksk5280")
@@ -78,7 +79,6 @@ describe GithubService do
       end
     end
   end
-  # 
   # context ".followed_events" do
   #   it "returns events from the users being followed" do
   #     VCR.use_cassette("github_service.followed_events") do
