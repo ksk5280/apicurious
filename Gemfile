@@ -12,6 +12,7 @@ gem "omniauth"
 gem "omniauth-github"
 gem 'pg'
 gem 'faraday'
+gem 'nokogiri'
 gem 'rails_12factor', group: :production
 group :development, :test do
   gem 'pry'

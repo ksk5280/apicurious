@@ -79,6 +79,36 @@ RSpec.describe GithubService do
       end
     end
   end
+
+  context ".contributions_in_last_year" do
+    it "returns current user's total number of contributions" do
+      VCR.use_cassette("github_service.contributions_in_last_year") do
+        contributions = service.contributions_in_last_year(user)
+
+        expect(contributions).to eq("645 total")
+      end
+    end
+  end
+
+  context ".longest_streak" do
+    it "returns current user's longest streak" do
+      VCR.use_cassette("github_service.longest_streak") do
+        long_streak = service.longest_streak(user)
+
+        expect(long_streak).to eq("35 days")
+      end
+    end
+  end
+
+  context ".current_streak" do
+    it "returns current user's current streak" do
+      VCR.use_cassette("github_service.current_streak") do
+        current = service.current_streak(user)
+
+        expect(current).to eq("4 days")
+      end
+    end
+  end
   # context ".followed_events" do
   #   it "returns events from the users being followed" do
   #     VCR.use_cassette("github_service.followed_events") do

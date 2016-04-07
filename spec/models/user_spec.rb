@@ -48,4 +48,28 @@ RSpec.describe User, type: :model do
       expect(followed_users.count).to eq(16)
     end
   end
+
+  it "returns total number of contributions" do
+    VCR.use_cassette "user.contributions_in_last_year" do
+      contributions = user.contributions_in_last_year(user)
+
+      expect(contributions).to eq("645 total")
+    end
+  end
+
+  it "returns longest streak" do
+    VCR.use_cassette "user.longest_streak" do
+      long_streak = user.longest_streak(user)
+
+      expect(long_streak).to eq("35 days")
+    end
+  end
+
+  it "returns current streak" do
+    VCR.use_cassette "user.current_streak" do
+      current = user.current_streak(user)
+
+      expect(current).to eq("4 days")
+    end
+  end
 end

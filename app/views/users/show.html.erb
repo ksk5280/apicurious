@@ -8,6 +8,11 @@
     <li><%= link_to "#{repo.name}",  "https://github.com/#{@user.username}/#{repo.name}"%></li>
   <% end %>
 
+  <h1>Contributions</h1>
+  <li>Contributions in the Last Year: <%= @user.contributions_in_last_year(@user) %></li>
+  <li>Longest Streak: <%= @user.longest_streak(@user) %></li>
+  <li>Current Streak: <%= @user.current_streak(@user) %></li>
+
   <h1>Followers (<%= @user.followers(@user).count %>)</h1>
   <% @user.followers(@user).each do |follower| %>
     <li><%= link_to "#{follower.login}", "https://github.com/#{follower.login}" %></li>
@@ -15,7 +20,9 @@
 
   <h1>Following (<%= @user.following(@user).count %>)</h1>
   <% @user.following(@user).each do |followed_user| %>
-    <li><%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%></li>
+    <li>
+      <%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%>
+    </li>
   <% end %>
 
   <h1>Starred Repositories (<%= @user.starred_repos(@user).count %>)</h1>
