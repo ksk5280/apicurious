@@ -1,7 +1,8 @@
 require "rails_helper"
+require "helpers/authentication"
 
 RSpec.feature "User logs in with Github and logs out" do
-  include Capybara::DSL
+  include Authentication
   before(:each) do
     Capybara.app = Apicurious::Application
     stub_omniauth
@@ -24,24 +25,5 @@ RSpec.feature "User logs in with Github and logs out" do
     expect(current_path).to eq "/"
     expect(page).to_not have_content "Kimiko"
     expect(page).to have_content "Sign in with Github"
-  end
-
-  def stub_omniauth
-    # set OmniAuth to run in test mode
-    OmniAuth.config.test_mode = true
-    # then, provide a set of fake oauth data that
-    # omniauth will use when a user tries to authenticate:
-    OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
-      provider: 'github',
-      uid: "1234",
-      info: {
-        name: "Kimiko",
-        nickname: "ksk5280",
-        image: "image"
-      },
-      credentials: {
-        token: ENV["OAUTH_TOKEN"]
-      }
-    })
   end
 end
