@@ -5,7 +5,7 @@ module Authentication
     # then, provide a set of fake oauth data that
     # omniauth will use when a user tries to authenticate:
     OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
-      provider: 'github',
+      provider: "github",
       uid: "1234",
       info: {
         name: "Kimiko",
