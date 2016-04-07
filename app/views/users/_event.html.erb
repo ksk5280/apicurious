@@ -1,6 +1,17 @@
 <div class="row">
   <div class="row">
     <div class="col-md-4">
+      <h5>Repository</h5>
+    </div>
+    <div class="col-md-4">
+      <h5>Event Type</h5>
+    </div>
+    <div class="col-md-4">
+      <h5>Event Date</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
       <%= link_to "#{event.repo.name}", "https://github.com/#{event.repo.name}"%>
     </div>
     <div class="col-md-4">
@@ -15,9 +26,12 @@
   <div class="row">
     <div class="col-md-12">
       <% if event.type == "PushEvent" %>
+        <br>
         <% event.payload.commits.each do |commit| %>
         <div class="row">
-          <%= commit.message %>
+          <div class="col-md-12">
+            <%= commit.message %>
+          </div>
         </div>
         <% end %>
       <% end %>

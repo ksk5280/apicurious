@@ -1,46 +1,62 @@
-<div class="user-info">
-  <%= image_tag "#{@user.profile_pic}", size: "230x230", class: "avatar" %>
-  <h1><%= @user.name %></h1>
-  <h3><%= @user.username %></h3>
+<div class="container">
+  <div class="row">
+    <div class="user-info col-md-4">
+      <%= image_tag "#{@user.profile_pic}", size: "230x230", class: "avatar" %>
+      <h1><%= @user.name %></h1>
+      <h3><%= @user.username %></h3>
 
-  <h1>Repositories (<%= @user.repos(@user).count %>)</h1>
-  <% @user.repos(@user).each do |repo| %>
-    <li><%= link_to "#{repo.name}",  "https://github.com/#{@user.username}/#{repo.name}"%></li>
-  <% end %>
+      <h3>Contributions</h3>
+      <p>
+        <strong>Contributions in the Last Year: </strong>
+        <%= @user.contributions_in_last_year(@user) %>
+      </p>
+      <p>
+        <strong>Longest Streak: </strong>
+        <%= @user.longest_streak(@user) %>
+       </p>
+      <p>
+        <strong>Current Streak: </strong>
+        <%= @user.current_streak(@user) %>
+      </p>
 
-  <h1>Contributions</h1>
-  <li>Contributions in the Last Year: <%= @user.contributions_in_last_year(@user) %></li>
-  <li>Longest Streak: <%= @user.longest_streak(@user) %></li>
-  <li>Current Streak: <%= @user.current_streak(@user) %></li>
+      <h3>Followers (<%= @user.followers(@user).count %>)</h3>
+      <% @user.followers(@user).each do |follower| %>
+      <h4><%= link_to "#{follower.login}", "https://github.com/#{follower.login}" %></h4>
+      <% end %>
 
-  <h1>Followers (<%= @user.followers(@user).count %>)</h1>
-  <% @user.followers(@user).each do |follower| %>
-    <li><%= link_to "#{follower.login}", "https://github.com/#{follower.login}" %></li>
-  <% end %>
+      <h3>Following (<%= @user.following(@user).count %>)</h3>
+      <% @user.following(@user).each do |followed_user| %>
+      <h4>
+        <%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%>
+      </h4>
+      <% end %>
 
-  <h1>Following (<%= @user.following(@user).count %>)</h1>
-  <% @user.following(@user).each do |followed_user| %>
-    <li>
-      <%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%>
-    </li>
-  <% end %>
+      <h3>Starred Repositories (<%= @user.starred_repos(@user).count %>)</h3>
+      <% @user.starred_repos(@user).each do |repo| %>
+      <h4><%= link_to "#{repo.name}", "https://github.com/#{repo.full_name}" %></h4>
+      <% end %>
 
-  <h1>Starred Repositories (<%= @user.starred_repos(@user).count %>)</h1>
-  <% @user.starred_repos(@user).each do |repo| %>
-  <li><%= link_to "#{repo.name}", "https://github.com/#{repo.full_name}" %></li>
-  <% end %>
+      <h3>Organizations (<%= @user.orgs(@user).count %>)</h3>
+      <% @user.orgs(@user).each do |org| %>
+      <h4><%= org.name %></h4>
+      <% end %>
+    </div>
 
-  <h1>Organizations (<%= @user.orgs(@user).count %>)</h1>
-  <% @user.orgs(@user).each do |org| %>
-  <li><%= org.name %></li>
-  <% end %>
+    <div class="repositories col-md-8">
+      <h2>Repositories (<%= @user.repos(@user).count %>)</h2>
+      <% @user.repos(@user).each do |repo| %>
+      <h3><%= link_to "#{repo.name}",  "https://github.com/#{@user.username}/#{repo.name}"%></h3>
+      <hr>
+      <% end %>
+    </div>
+  </div>
 
-  <h1>Recent Activity</h1>
+  <h3>Recent Activity</h3>
   <% @user.events(@user).each do |event| %>
     <%= render partial: "event", locals: { event: event } %>
   <% end %>
 
-  <h1>Following (<%= @user.following(@user).count %>)</h1>
+  <h3>Activity From Users I Follow</h3>
   <% @user.following(@user).each do |followed_user| %>
     <h2><%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%></h2>
     <% @user.followed_events(followed_user.login).each do |event| %>
