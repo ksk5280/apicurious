@@ -3,59 +3,41 @@
   <h1><%= @user.name %></h1>
   <h3><%= @user.username %></h3>
 
-  <h1>Repositories (<%= @user.repo_count(@user) %>)</h1>
+  <h1>Repositories (<%= @user.repos(@user).count %>)</h1>
   <% @user.repos(@user).each do |repo| %>
-  <li><%= repo %></li>
+    <li><%= link_to "#{repo.name}",  "https://github.com/#{@user.username}/#{repo.name}"%></li>
   <% end %>
 
-  <h1>Followers (<%= @user.follower_count(@user) %>)</h1>
+  <h1>Followers (<%= @user.followers(@user).count %>)</h1>
   <% @user.followers(@user).each do |follower| %>
-  <li><%= follower %></li>
+    <li><%= link_to "#{follower.login}", "https://github.com/#{follower.login}" %></li>
   <% end %>
 
-  <h1>Following (<%= @user.following_count(@user) %>)</h1>
-  <% @user.following(@user).each do |following| %>
-  <li><%= following %></li>
+  <h1>Following (<%= @user.following(@user).count %>)</h1>
+  <% @user.following(@user).each do |followed_user| %>
+    <li><%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%></li>
   <% end %>
 
-  <h1>Starred Repositories (<%= @user.starred_repo_count(@user) %>)</h1>
+  <h1>Starred Repositories (<%= @user.starred_repos(@user).count %>)</h1>
   <% @user.starred_repos(@user).each do |repo| %>
-  <li><%= repo %></li>
+  <li><%= link_to "#{repo.name}", "https://github.com/#{repo.full_name}" %></li>
   <% end %>
 
-  <h1>Organizations (<%= @user.org_count(@user) %>)</h1>
+  <h1>Organizations (<%= @user.orgs(@user).count %>)</h1>
   <% @user.orgs(@user).each do |org| %>
-  <li><%= org %></li>
+  <li><%= org.name %></li>
   <% end %>
 
-  <h1>Events</h1>
-  <% @user.event_type(@user).each do |event| %>
-    <div class="row">
-      <div class="row">
-        <div class="col-md-4">
-          <%= link_to "#{event.repo.name}", "https://github.com/#{event.repo.name}"%>
-        </div>
-        <div class="col-md-8">
-          <%= event.type %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <%= Date.parse(event.created_at).strftime('%m-%d-%Y') %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <% if event.type == "PushEvent" %>
-            <% event.payload.commits.each do |commit| %>
-              <div class="row">
-                <%= commit.message %>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-      <hr>
-    </div>
+  <h1>Recent Activity</h1>
+  <% @user.events(@user).each do |event| %>
+    <%= render partial: "event", locals: { event: event } %>
+  <% end %>
+
+  <h1>Following (<%= @user.following(@user).count %>)</h1>
+  <% @user.following(@user).each do |followed_user| %>
+    <h2><%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%></h2>
+    <% @user.followed_events(followed_user.login).each do |event| %>
+      <%= render partial: "event", :locals => { :event => event } %>
+    <% end %>
   <% end %>
 </div>

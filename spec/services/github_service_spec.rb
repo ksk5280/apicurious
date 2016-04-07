@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe GithubService do
-  context '.repositories' do
+  context ".repositories" do
     it "returns current user repositories" do
       VCR.use_cassette("github_service.repos") do
         service = GithubService.new
