@@ -40,4 +40,16 @@ class User < ActiveRecord::Base
   def followed_events(followed_username)
     User.service.followed_events(followed_username)
   end
+
+  def contributions_in_last_year(user)
+    User.service.contributions_in_last_year(user)
+  end
+
+  def longest_streak(user)
+    User.service.longest_streak(user)
+  end
+
+  def current_streak(user)
+    User.service.current_streak(user)
+  end
 end

@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class GithubService
   def initialize
     @_connection = Faraday.new(url: "https://api.github.com") do |faraday|
@@ -35,6 +37,22 @@ class GithubService
     parse(connection.get("/users/#{followed_username}/events", github_secrets))
   end
 
+  def contribution_elements(user)
+    page_doc(user).css('.contrib-number')
+  end
+
+  def contributions_in_last_year(user)
+    contribution_elements(user)[0].children[0].to_s
+  end
+
+  def longest_streak(user)
+    contribution_elements(user)[1].children[0].to_s
+  end
+
+  def current_streak(user)
+    contribution_elements(user)[2].children[0].to_s
+  end
+
   private
 
     def connection
@@ -51,5 +69,10 @@ class GithubService
 
     def github_secrets
       { "client_id" => ENV["GITHUB_KEY"], "client_secret" => ENV["GITHUB_SECRET"] }
+    end
+
+    def page_doc(user)
+      html = open("https://github.com/#{user.username}")
+      Nokogiri::HTML(html)
     end
 end
