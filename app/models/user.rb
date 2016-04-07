@@ -8,4 +8,36 @@ class User < ActiveRecord::Base
       new_user.profile_pic  = auth_info.info.image
     end
   end
+
+  def self.service
+    GithubService.new
+  end
+
+  def repos(user)
+    User.service.repos(user)
+  end
+
+  def orgs(user)
+    User.service.orgs(user)
+  end
+
+  def starred_repos(user)
+    User.service.starred_repos(user)
+  end
+
+  def followers(user)
+    User.service.followers(user)
+  end
+
+  def following(user)
+    User.service.following(user)
+  end
+
+  def events(user)
+    User.service.events(user)
+  end
+
+  def followed_events(followed_username)
+    User.service.followed_events(followed_username)
+  end
 end

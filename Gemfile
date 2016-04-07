@@ -11,6 +11,7 @@ gem 'figaro'
 gem "omniauth"
 gem "omniauth-github"
 gem 'pg'
+gem 'faraday'
 gem 'rails_12factor', group: :production
 group :development, :test do
   gem 'pry'
@@ -24,4 +25,7 @@ end
 
 group :test do
   gem 'simplecov', require: false
+  gem 'vcr'
+  gem 'webmock'
+  gem 'pry-rails'
 end
