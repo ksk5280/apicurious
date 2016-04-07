@@ -1,4 +1,4 @@
-require 'open-uri'
+require "open-uri"
 
 class GithubService
   def initialize
@@ -38,7 +38,7 @@ class GithubService
   end
 
   def contribution_elements(user)
-    page_doc(user).css('.contrib-number')
+    page_doc(user).css(".contrib-number")
   end
 
   def contributions_in_last_year(user)

@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   end
 
   def followed_events(followed_username)
-    User.service.followed_events(followed_username)
+    User.service.followed_events(followed_username)[0..9]
   end
 
   def contributions_in_last_year(user)
