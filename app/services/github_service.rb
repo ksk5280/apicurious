@@ -1,6 +1,6 @@
 class GithubService
   def initialize
-    @_connection = Faraday.new(:url => 'https://api.github.com') do |faraday|
+    @_connection = Faraday.new(url: "https://api.github.com") do |faraday|
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to STDOUT
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
