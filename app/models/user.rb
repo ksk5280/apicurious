@@ -57,4 +57,8 @@ class User < ActiveRecord::Base
   def following_count(user)
     following(user).count
   end
+
+  def event_type(user)
+    User.service.events(user)
+  end
 end

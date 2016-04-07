@@ -27,4 +27,35 @@
   <% @user.orgs(@user).each do |org| %>
   <li><%= org %></li>
   <% end %>
+
+  <h1>Events</h1>
+  <% @user.event_type(@user).each do |event| %>
+    <div class="row">
+      <div class="row">
+        <div class="col-md-4">
+          <%= link_to "#{event.repo.name}", "https://github.com/#{event.repo.name}"%>
+        </div>
+        <div class="col-md-8">
+          <%= event.type %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <%= Date.parse(event.created_at).strftime('%m-%d-%Y') %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <% if event.type == "PushEvent" %>
+            <% event.payload.commits.each do |commit| %>
+              <div class="row">
+                <%= commit.message %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <hr>
+    </div>
+  <% end %>
 </div>
