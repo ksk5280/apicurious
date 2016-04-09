@@ -7,10 +7,15 @@ class GithubService
       faraday.response :logger                  # log requests to STDOUT
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
     end
+
+    @_connection.get do |req|
+      req.params['access_token'] = user.oauth_token.to_s
+    end
   end
 
   def repos(user)
-    parse(connection.get("/users/#{user.username}/repos", access_token(user)))
+    parse(connection.get("/users/#{username}/repos"))
+    # parse(connection.get("/users/#{user.username}/repos", access_token(user)))
   end
 
   def orgs(user)
