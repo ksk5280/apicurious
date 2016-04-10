@@ -1,7 +1,7 @@
 require "open-uri"
 
 class GithubService
-  def initialize
+  def initialize(user)
     @_connection = Faraday.new(url: "https://api.github.com") do |faraday|
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to STDOUT
@@ -11,54 +11,59 @@ class GithubService
     @_connection.get do |req|
       req.params['access_token'] = user.oauth_token.to_s
     end
+
+    @_user = user
   end
 
-  def repos(user)
-    parse(connection.get("/users/#{username}/repos"))
-    # parse(connection.get("/users/#{user.username}/repos", access_token(user)))
+  def repos
+    parse(connection.get("/users/#{user.username}/repos"))
   end
 
-  def orgs(user)
-    parse(connection.get("/users/#{user.username}/orgs", access_token(user)))
+  def orgs
+    parse(connection.get("/users/#{user.username}/orgs"))
   end
 
-  def followers(user)
-    parse(connection.get("/users/#{user.username}/followers", access_token(user)))
+  def followers
+    parse(connection.get("/users/#{user.username}/followers"))
   end
 
-  def following(user)
-    parse(connection.get("/users/#{user.username}/following", access_token(user)))
+  def following
+    parse(connection.get("/users/#{user.username}/following"))
   end
 
-  def starred_repos(user)
-    parse(connection.get("/users/#{user.username}/starred", access_token(user)))
+  def starred_repos
+    parse(connection.get("/users/#{user.username}/starred"))
   end
 
-  def events(user)
-    parse(connection.get("/users/#{user.username}/events", access_token(user)))
+  def events
+    parse(connection.get("/users/#{user.username}/events"))
   end
 
   def followed_events(followed_username)
     parse(connection.get("/users/#{followed_username}/events", github_secrets))
   end
 
-  def contribution_elements(user)
-    page_doc(user).css(".contrib-number")
+  def contribution_elements
+    page_doc.css(".contrib-number")
   end
 
-  def contributions_in_last_year(user)
-    contribution_elements(user)[0].children[0].to_s
+  def contributions_in_last_year
+    contribution_elements[0].children[0].to_s
   end
 
-  def longest_streak(user)
-    contribution_elements(user)[1].children[0].to_s
+  def longest_streak
+    contribution_elements[1].children[0].to_s
   end
 
-  def current_streak(user)
-    contribution_elements(user)[2].children[0].to_s
+  def current_streak
+    contribution_elements[2].children[0].to_s
   end
 
   private
+
+    def user
+      @_user
+    end
 
     def connection
       @_connection
@@ -68,7 +73,7 @@ class GithubService
       JSON.parse(response.body, symbolize_names: true, object_class: OpenStruct)
     end
 
-    def access_token(user)
+    def access_token
       { "access_token" => user.oauth_token.to_s }
     end
 
@@ -76,7 +81,7 @@ class GithubService
       { "client_id" => ENV["GITHUB_KEY"], "client_secret" => ENV["GITHUB_SECRET"] }
     end
 
-    def page_doc(user)
+    def page_doc
       html = open("https://github.com/#{user.username}")
       Nokogiri::HTML(html)
     end

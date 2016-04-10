@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  # def initialize(user)
+  #   @_user = user
+  # end
+
   def self.from_omniauth(auth_info)
     where(uid: auth_info[:uid]).first_or_create do |new_user|
       new_user.uid          = auth_info.uid
@@ -9,8 +13,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.service
-    GithubService.new
+  def self.service(user)
+    GithubService.new(user)
   end
 
   def repos(user)
@@ -41,15 +45,21 @@ class User < ActiveRecord::Base
     User.service.followed_events(followed_username)[0..9]
   end
 
-  def contributions_in_last_year(user)
+  def contributions_in_last_year
     User.service.contributions_in_last_year(user)
   end
 
-  def longest_streak(user)
+  def longest_streak
     User.service.longest_streak(user)
   end
 
-  def current_streak(user)
+  def current_streak
     User.service.current_streak(user)
   end
+
+  private
+
+    def user
+      @_user
+    end
 end
