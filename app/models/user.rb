@@ -11,50 +11,52 @@ class User < ActiveRecord::Base
       new_user.oauth_token  = auth_info.credentials.token
       new_user.profile_pic  = auth_info.info.image
     end
+
   end
 
   def self.service(user)
+    # binding.pry
     GithubService.new(user)
   end
 
   def repos(user)
-    User.service.repos(user)
+    User.service(user).repos
   end
 
   def orgs(user)
-    User.service.orgs(user)
+    User.service(user).orgs
   end
 
   def starred_repos(user)
-    User.service.starred_repos(user)
+    User.service(user).starred_repos
   end
 
   def followers(user)
-    User.service.followers(user)
+    User.service(user).followers
   end
 
   def following(user)
-    User.service.following(user)
+    User.service(user).following
   end
 
   def events(user)
-    User.service.events(user)
+    User.service(user).events
   end
 
   def followed_events(followed_username)
-    User.service.followed_events(followed_username)[0..9]
+    User.service(user).followed_events(followed_username)[0..9]
   end
 
-  def contributions_in_last_year
-    User.service.contributions_in_last_year(user)
+  def contributions_in_last_year(user)
+    User.service(user).contributions_in_last_year
   end
 
-  def longest_streak
-    User.service.longest_streak(user)
+  def longest_streak(user)
+    User.service(user).longest_streak
   end
 
-  def current_streak
-    User.service.current_streak(user)
+  def current_streak(user)
+    User.service(user).current_streak
   end
 
   private

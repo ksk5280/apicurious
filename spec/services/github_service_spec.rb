@@ -5,6 +5,8 @@ RSpec.describe GithubService do
 
   before(:each) do
     @user = User.new
+      # oauth_token: ENV["OAUTH_TOKEN"],
+      # username: "ksk5280"
     @user.oauth_token = ENV["OAUTH_TOKEN"]
     @user.username = "ksk5280"
     @service = GithubService.new(@user)

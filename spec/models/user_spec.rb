@@ -4,14 +4,16 @@ RSpec.describe User, type: :model do
   attr_reader :user
 
   before(:each) do
-    @user = User.new
-    @user.oauth_token = ENV["OAUTH_TOKEN"]
-    @user.username = "ksk5280"
+    @user = User.new(
+      oauth_token: ENV["OAUTH_TOKEN"],
+      username: "ksk5280")
+    # @user.oauth_token = ENV["OAUTH_TOKEN"]
+    # @user.username = "ksk5280"
   end
 
   it "returns a collection of repositories" do
     VCR.use_cassette "user.repo" do
-      repos = user.repos(user)
+      repos = @user.repos(user)
       repo  = repos.first
 
       expect(repo.name).to eq("active-record-sinatra")
@@ -35,7 +37,7 @@ RSpec.describe User, type: :model do
       follower  = followers.first
 
       expect(follower.login).to eq("hkang1")
-      expect(followers.count).to eq(12)
+      expect(followers.count).to eq(13)
     end
   end
 
@@ -53,7 +55,7 @@ RSpec.describe User, type: :model do
     VCR.use_cassette "user.contributions_in_last_year" do
       contributions = user.contributions_in_last_year(user)
 
-      expect(contributions).to eq("645 total")
+      expect(contributions).to eq("658 total")
     end
   end
 
@@ -69,7 +71,7 @@ RSpec.describe User, type: :model do
     VCR.use_cassette "user.current_streak" do
       current = user.current_streak(user)
 
-      expect(current).to eq("4 days")
+      expect(current).to eq("6 days")
     end
   end
 end
