@@ -3,7 +3,9 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
-  def followers
-    @followers = current_user.followers(current_user)
+  def following
+    @following_user = current_user.following(current_user).detect do |follower|
+      follower.login == params[:username]
+    end
   end
 end

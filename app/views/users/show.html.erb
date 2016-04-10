@@ -19,16 +19,19 @@
         <%= @user.current_streak(@user) %>
       </p>
 
+      <h3>Following (<%= @user.following(@user).count %>)</h3>
+      <% @user.following(@user).each do |followed_user| %>
+        <div class="row">
+          <h4>
+            <%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%> -
+            <%= link_to "Events", following_path(followed_user.login) %>
+          </h4>
+        </div>
+      <% end %>
+
       <h3>Followers (<%= @user.followers(@user).count %>)</h3>
       <% @user.followers(@user).each do |follower| %>
       <h4><%= link_to "#{follower.login}", "https://github.com/#{follower.login}" %></h4>
-      <% end %>
-
-      <h3>Following (<%= @user.following(@user).count %>)</h3>
-      <% @user.following(@user).each do |followed_user| %>
-      <h4>
-        <%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%>
-      </h4>
       <% end %>
 
       <h3>Starred Repositories (<%= @user.starred_repos(@user).count %>)</h3>
@@ -56,11 +59,4 @@
     <%= render partial: "event", locals: { event: event } %>
   <% end %>
 
-  <h3>Activity From Users I Follow</h3>
-  <% @user.following(@user).each do |followed_user| %>
-    <h2><%= link_to "#{followed_user.login}", "https://github.com/#{followed_user.login}"%></h2>
-    <% @user.followed_events(followed_user.login).each do |event| %>
-      <%= render partial: "event", :locals => { :event => event } %>
-    <% end %>
-  <% end %>
 </div>
