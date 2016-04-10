@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   end
 
   def events(user)
-    User.service.events(user)
+    User.service.events(user)[0..9]
   end
 
   def followed_events(followed_username)

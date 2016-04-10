@@ -1,0 +1,6 @@
+<h2>
+  <%= link_to "#{@following_user.login}'s Activity", "https://github.com/#{@following_user.login}"%>
+  <% current_user.followed_events(@following_user.login).each do |event| %>
+    </h2>
+    <%= render partial: "event", :locals => { :event => event } %>
+  <% end %>
